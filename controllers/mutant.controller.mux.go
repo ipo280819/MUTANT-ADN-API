@@ -9,12 +9,17 @@ import (
 )
 
 type mutantMuxController struct {
-	mutantService services.MutantService
+	mutantService      services.MutantService
+	mutantStatsService services.MutantStatsService
 }
 
-func newMutantMuxController(mutantService services.MutantService) MutantController {
-	return &mutantMuxController{mutantService}
+func newMutantMuxController(mutantService services.MutantService, mutantStatsService services.MutantStatsService) MutantController {
+	return &mutantMuxController{
+		mutantService,
+		mutantStatsService,
+	}
 }
+
 func (controller *mutantMuxController) IsMutant(w http.ResponseWriter, r *http.Request) {
 
 	var mutantDTO dto.MutantDTO
@@ -32,9 +37,20 @@ func (controller *mutantMuxController) IsMutant(w http.ResponseWriter, r *http.R
 		return
 	}
 
+	err = controller.mutantStatsService.AddStats(isMutant)
+
+	if err != nil {
+		ResponseError(w, err)
+		return
+	}
 	if isMutant {
 		ResponseOK(w, struct{}{})
 	} else {
 		ResponseStatus(http.StatusForbidden, w, struct{}{})
 	}
+}
+
+func (controller *mutantMuxController) MutantStats(w http.ResponseWriter, r *http.Request) {
+	statsDTO := controller.mutantStatsService.GetStats()
+	ResponseOK(w, statsDTO)
 }
