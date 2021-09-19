@@ -1,21 +1,20 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/ipo280819/MUTANT-ADN-API/controllers"
+	"github.com/ipo280819/MUTANT-ADN-API/router"
 	"github.com/ipo280819/MUTANT-ADN-API/services"
 )
 
+var (
+	mutantService    = services.MutantService{}
+	routerHttp       = router.NewRouter()
+	mutantController = controllers.NewMutantController(mutantService)
+)
+
 func main() {
-	dna := []string{
-		"ATGCGA",
-		"CAGTGC",
-		"TTATGT",
-		"AGAAGG",
-		"CCCCTA",
-		"AACCCA",
-	}
-	human := services.Mutant{Adn: dna}
-	isMutant, _ := human.IsMutant()
-	fmt.Printf("Is mutant: %v\n", isMutant)
+
+	routerHttp.POST("/mutant", mutantController.IsMutant)
+	routerHttp.SERVE(":3000")
+
 }

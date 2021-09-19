@@ -11,19 +11,27 @@ const (
 	SIZE_SUBSEQUENCE = 4
 )
 
-type Mutant struct {
+type mutant struct {
 	Adn         []string
 	counter     int
 	lockCounter sync.Mutex
 }
+type MutantService struct {
+}
 
-func (mutant *Mutant) isValidAdn() bool {
+func (MutantService) NewMutant(dna []string) *mutant {
+	return &mutant{
+		Adn: dna,
+	}
+}
+
+func (mutant *mutant) isValidAdn() bool {
 	n := len(mutant.Adn)
 	m := len(mutant.Adn[0])
 	return n == m
 }
 
-func (mutant *Mutant) IsMutant() (bool, error) {
+func (mutant *mutant) IsMutant() (bool, error) {
 
 	if !mutant.isValidAdn() {
 		return false, errors.New("this Adn can't be analize, wrong dimensions")
@@ -57,7 +65,7 @@ func (mutant *Mutant) IsMutant() (bool, error) {
 	return mutant.counter >= MAX_SUBSEQUENCES, nil
 }
 
-func (mutant *Mutant) verifySequence(sequence []byte) int {
+func (mutant *mutant) verifySequence(sequence []byte) int {
 
 	prevLetter := sequence[0]
 	keepSequence := true
@@ -83,7 +91,7 @@ func (mutant *Mutant) verifySequence(sequence []byte) int {
 	return lastIndex
 }
 
-func (mutant *Mutant) runHorizontalSearch() {
+func (mutant *mutant) runHorizontalSearch() {
 
 	n := len(mutant.Adn)
 	for i := 0; i < n; i++ {
@@ -98,7 +106,7 @@ func (mutant *Mutant) runHorizontalSearch() {
 	}
 }
 
-func (mutant *Mutant) runVerticalSearch() {
+func (mutant *mutant) runVerticalSearch() {
 
 	n := len(mutant.Adn)
 	for i := 0; i < n; i++ {
@@ -113,7 +121,7 @@ func (mutant *Mutant) runVerticalSearch() {
 	}
 }
 
-func (mutant *Mutant) getColumnFromRow(col int, row int) []byte {
+func (mutant *mutant) getColumnFromRow(col int, row int) []byte {
 	seq := []byte{}
 	for i := 0; i < SIZE_SUBSEQUENCE; i++ {
 		seq = append(seq, mutant.Adn[row+i][col])
@@ -121,7 +129,7 @@ func (mutant *Mutant) getColumnFromRow(col int, row int) []byte {
 	return seq
 }
 
-func (mutant *Mutant) runDiagonalSearch() {
+func (mutant *mutant) runDiagonalSearch() {
 
 	n := len(mutant.Adn)
 	for i := 0; i < n-SIZE_SUBSEQUENCE+1; i++ { // horizontal / vertical movs
@@ -161,7 +169,7 @@ func (mutant *Mutant) runDiagonalSearch() {
 
 	}
 }
-func (mutant *Mutant) getDiagonalFrom(row int, col int) []byte {
+func (mutant *mutant) getDiagonalFrom(row int, col int) []byte {
 	seq := []byte{}
 	for i := 0; i < SIZE_SUBSEQUENCE; i++ {
 		seq = append(seq, mutant.Adn[row+i][col+i])
@@ -169,7 +177,7 @@ func (mutant *Mutant) getDiagonalFrom(row int, col int) []byte {
 	return seq
 }
 
-func (mutant *Mutant) runDiagonalInvSearch() {
+func (mutant *mutant) runDiagonalInvSearch() {
 
 	n := len(mutant.Adn)
 	for i := 0; i < n-SIZE_SUBSEQUENCE+1; i++ { // horizontal / vertical movs
@@ -211,7 +219,7 @@ func (mutant *Mutant) runDiagonalInvSearch() {
 
 	}
 }
-func (mutant *Mutant) getDiagonalInvFrom(row int, col int) []byte {
+func (mutant *mutant) getDiagonalInvFrom(row int, col int) []byte {
 	seq := []byte{}
 	for i := 0; i < SIZE_SUBSEQUENCE; i++ {
 		seq = append(seq, mutant.Adn[row+i][col-i])
