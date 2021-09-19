@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: golang-api
-        image: gcr.io/ipo-mutant-cluster/golang-api:latest
+        image: gcr.io/ipo-mutant-api/golang-api:latest
         imagePullPolicy: Always
         resources:
           requests:
