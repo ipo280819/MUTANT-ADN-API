@@ -19,6 +19,6 @@ func main() {
 
 	routerHttp.POST("/mutant", mutantController.IsMutant)
 	routerHttp.GET("/stats", mutantController.MutantStats)
-	routerHttp.SERVE(":3000")
+	routerHttp.SERVE(":80")
 
 }

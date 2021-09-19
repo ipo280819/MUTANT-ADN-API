@@ -21,7 +21,7 @@ spec:
             cpu: 100m
             memory: 100Mi
         ports:
-          - containerPort: 3000  # Should match the port number that the Go application listens on    
+          - containerPort: 80  # Should match the port number that the Go application listens on    
         env:                     # Environment variables passed to the container
           - name: REDIS_PASS
             value: "11111111"
@@ -35,7 +35,7 @@ spec:
   ports:                         # Take incoming HTTP requests on port 3000 and forward them to the targetPort of 80
   - name: http
     port: 80
-    targetPort: 3000
+    targetPort: 80
     protocol: TCP
   selector:
     app: golang-api            # Map any pod with label `app=golang-api` to this service
