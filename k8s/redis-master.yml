@@ -1,5 +1,3 @@
-type: post
----
 apiVersion: apps/v1  # API version
 kind: Deployment
 metadata:
@@ -29,8 +27,7 @@ spec:
             memory: 100Mi
         ports:
         - containerPort: 6379
-type: post
----        
+---
 apiVersion: v1
 kind: Service        # Type of Kubernetes resource
 metadata:
@@ -53,9 +50,6 @@ spec:
         secretKeyRef:
           name: redis-secret
           key: REDIS_PASS
-  command:
-    - redis-server
-    args:
-      - --requirepass
-      - $(REDIS_PASS)
+  command: ["redis-server"]
+  args: ["--requirepass", "$(REDIS_PASS)"]
     
