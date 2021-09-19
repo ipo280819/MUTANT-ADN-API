@@ -9,7 +9,7 @@ import (
 
 func TestIsMutant(t *testing.T) {
 	dna := []string{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "AACCCA"}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 	isMutant, _ := human.IsMutant()
 	assert.Equal(t, true, isMutant)
 }
@@ -22,7 +22,7 @@ func TestVerifySubsequence(t *testing.T) {
 	sequence := "AAAA"
 	calls := 4
 	wg := sync.WaitGroup{}
-	human := Mutant{}
+	human := MutantService{}.NewMutant([]string{})
 
 	for i := 0; i < calls; i++ {
 		wg.Add(1)
@@ -37,7 +37,7 @@ func TestVerifySubsequence(t *testing.T) {
 
 func TestVerifySubsequenceNotFound(t *testing.T) {
 	sequence := "AABA"
-	human := Mutant{}
+	human := MutantService{}.NewMutant([]string{})
 	human.verifySequence([]byte(sequence))
 
 	assert.Equal(t, 0, human.counter)
@@ -45,7 +45,7 @@ func TestVerifySubsequenceNotFound(t *testing.T) {
 
 func TestRunHorizontalSearch(t *testing.T) {
 	dna := []string{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "AACCCC"}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	human.runHorizontalSearch()
 
@@ -59,7 +59,7 @@ func TestRunHorizontalSearch(t *testing.T) {
 */
 func TestHorizontalSubsequencesLinked(t *testing.T) {
 	dna := []string{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCCT", "AATCCC"}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	human.runHorizontalSearch()
 
@@ -74,7 +74,7 @@ func TestGetCol(t *testing.T) {
 		"AGAAGG",
 		"CCCCTA",
 		"AACCTC"}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	seq := human.getColumnFromRow(3, 2)
 
@@ -90,7 +90,7 @@ func TestRunVerticalSearch(t *testing.T) {
 		"CCCCTT",
 		"AACCCT",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	human.runVerticalSearch()
 
@@ -105,7 +105,7 @@ func TestGetDiag(t *testing.T) {
 		"AGAAAG",
 		"CCCCTA",
 		"AACCTC"}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	seq := human.getDiagonalFrom(0, 1)
 
@@ -121,7 +121,7 @@ func TestRunDiagonalSearch(t *testing.T) {
 		"CCTTTG",
 		"CCCTTG",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	human.runDiagonalSearch()
 
@@ -137,7 +137,7 @@ func TestGetDiagInv(t *testing.T) {
 		"CCCCTA",
 		"AACCTC",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	seq := human.getDiagonalInvFrom(0, 5)
 
@@ -154,7 +154,7 @@ func TestRunDiagonalInvSearch(t *testing.T) {
 		"CGTTAAT",
 		"AAGATCA",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	human.runDiagonalInvSearch()
 
@@ -169,7 +169,7 @@ func TestIsValidAdn(t *testing.T) {
 		"CCCCTA",
 		"AACCTC",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	assert.Equal(t, true, human.isValidAdn())
 }
@@ -178,7 +178,7 @@ func TestIsNotValidAdn(t *testing.T) {
 	dna := []string{
 		"ATGCGA",
 	}
-	human := Mutant{Adn: dna}
+	human := MutantService{}.NewMutant(dna)
 
 	assert.Equal(t, false, human.isValidAdn())
 }
