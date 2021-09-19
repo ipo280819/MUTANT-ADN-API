@@ -19,7 +19,7 @@ steps:
   args: ['apply', '-f', 'k8s/golang-api.yml']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-  - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+  - 'CLOUDSDK_COMPUTE_REGION=us-central1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-cluster'
 #step 4
 - name: 'gcr.io/cloud-builders/kubectl'
@@ -32,7 +32,7 @@ steps:
   ]
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
-  - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
+  - 'CLOUDSDK_COMPUTE_REGION=us-central1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-cluster'
 # push images to Google Container Registry with tags
 images: [
