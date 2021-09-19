@@ -4,14 +4,14 @@ steps:
   entrypoint: 'bash'
   args: [
    '-c', 
-   'docker pull gcr.io/ipo-mutant-api/golang-api:latest || exit 0'
+   'docker pull gcr.io/ipo-mutant-cluster/golang-api:latest || exit 0'
   ]
 #step 2
 - name: gcr.io/cloud-builders/docker
   args: [
    'build', 
    '-t', 
-   'gcr.io/ipo-mutant-api/golang-api:latest',
+   'gcr.io/ipo-mutant-cluster/golang-api:latest',
    '.'
   ]
 #step 3
@@ -20,7 +20,7 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
   - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-api'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-cluster'
 #step 4
 - name: 'gcr.io/cloud-builders/kubectl'
   args: [
@@ -28,13 +28,13 @@ steps:
    'image', 
    'deployment', 
    'golang-api', 
-   'golang-api=gcr.io/ipo-mutant-api/golang-api:latest'
+   'golang-api=gcr.io/ipo-mutant-cluster/golang-api:latest'
   ]
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
   - 'CLOUDSDK_COMPUTE_REGION=us-central1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-api'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ipo-mutant-cluster'
 # push images to Google Container Registry with tags
 images: [
-   'gcr.io/ipo-mutant-api/golang-api:latest'
+   'gcr.io/ipo-mutant-cluster/golang-api:latest'
   ]
