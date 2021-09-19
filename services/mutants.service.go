@@ -34,7 +34,7 @@ func (mutant *mutant) isValidAdn() bool {
 func (mutant *mutant) IsMutant() (bool, error) {
 
 	if !mutant.isValidAdn() {
-		return false, errors.New("this Adn can't be analize, wrong dimensions")
+		return false, errors.New("this dna can't be analize, wrong dimensions")
 	}
 
 	wg := sync.WaitGroup{}

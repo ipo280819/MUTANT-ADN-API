@@ -8,8 +8,9 @@ import (
 
 type MutantController interface {
 	IsMutant(w http.ResponseWriter, r *http.Request)
+	MutantStats(w http.ResponseWriter, r *http.Request)
 }
 
-func NewMutantController(mutantService services.MutantService) MutantController {
-	return newMutantMuxController(mutantService)
+func NewMutantController(mutantService services.MutantService, mutantStatsService services.MutantStatsService) MutantController {
+	return newMutantMuxController(mutantService, mutantStatsService)
 }
