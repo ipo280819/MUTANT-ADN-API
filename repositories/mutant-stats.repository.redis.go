@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/ipo280819/MUTANT-ADN-API/dto"
@@ -19,9 +18,8 @@ type mutantStatsRedisRepository struct {
 // NewRepository instances a Redis implementation of the gopherapi.Repository
 func newMutantStatsRedisRepository() *mutantStatsRedisRepository {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "redis-service:6379",
-		Password: os.Getenv("REDIS_PASS"),
-		DB:       0, // use default DB
+		Addr: "redis-service:6379",
+		DB:   0, // use default DB
 	})
 	ctx := context.Background()
 	status, err := client.Ping(ctx).Result()
