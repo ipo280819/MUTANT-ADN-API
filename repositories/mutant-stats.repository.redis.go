@@ -18,6 +18,7 @@ type mutantStatsRedisRepository struct {
 
 // NewRepository instances a Redis implementation of the gopherapi.Repository
 func newMutantStatsRedisRepository() *mutantStatsRedisRepository {
+	fmt.Println(os.Getenv("REDIS_PASS"))
 	client := redis.NewClient(&redis.Options{
 		Addr:     "redis-service:6379",
 		Password: os.Getenv("REDIS_PASS"),
