@@ -171,7 +171,7 @@ func TestIsValidAdn(t *testing.T) {
 	}
 	human := MutantService{}.NewMutant(dna)
 
-	assert.Equal(t, true, human.isValidAdn())
+	assert.Equal(t, true, human.isValidAdnDimensions())
 }
 
 func TestIsNotValidAdn(t *testing.T) {
@@ -180,5 +180,5 @@ func TestIsNotValidAdn(t *testing.T) {
 	}
 	human := MutantService{}.NewMutant(dna)
 
-	assert.Equal(t, false, human.isValidAdn())
+	assert.Equal(t, false, human.isValidAdnDimensions())
 }

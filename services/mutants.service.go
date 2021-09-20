@@ -25,7 +25,7 @@ func (MutantService) NewMutant(dna []string) *mutant {
 	}
 }
 
-func (mutant *mutant) isValidAdn() bool {
+func (mutant *mutant) isValidAdnDimensions() bool {
 	n := len(mutant.Adn)
 	m := len(mutant.Adn[0])
 	return n == m
@@ -33,7 +33,7 @@ func (mutant *mutant) isValidAdn() bool {
 
 func (mutant *mutant) IsMutant() (bool, error) {
 
-	if !mutant.isValidAdn() {
+	if !mutant.isValidAdnDimensions() {
 		return false, errors.New("this dna can't be analize, wrong dimensions")
 	}
 
@@ -91,6 +91,7 @@ func (mutant *mutant) verifySequence(sequence []byte) int {
 	return lastIndex
 }
 
+/*========================================= HORIZONTAL SEARCH =========================================*/
 func (mutant *mutant) runHorizontalSearch() {
 
 	n := len(mutant.Adn)
@@ -106,6 +107,7 @@ func (mutant *mutant) runHorizontalSearch() {
 	}
 }
 
+/*============================================= VERTICAL SEARCH =============================================*/
 func (mutant *mutant) runVerticalSearch() {
 
 	n := len(mutant.Adn)
@@ -129,6 +131,7 @@ func (mutant *mutant) getColumnFromRow(col int, row int) []byte {
 	return seq
 }
 
+/*============================================= DIAGONAL SEARCH =============================================*/
 func (mutant *mutant) runDiagonalSearch() {
 
 	n := len(mutant.Adn)
@@ -159,7 +162,7 @@ func (mutant *mutant) runDiagonalSearch() {
 				if mutant.counter >= MAX_SUBSEQUENCES {
 					return
 				}
-				seq := mutant.getDiagonalFrom(j+1, i)
+				seq := mutant.getDiagonalFrom(j+1, i) //prevent repeat first diagonal with j+1
 				lastIndex := mutant.verifySequence(seq)
 				j += 1 + lastIndex
 
@@ -177,6 +180,8 @@ func (mutant *mutant) getDiagonalFrom(row int, col int) []byte {
 	return seq
 }
 
+/*========================================== DIAGONAL INVERSE SEARCH ==========================================*/
+/*============================================= A REALY HEADACHE ==============================================*/
 func (mutant *mutant) runDiagonalInvSearch() {
 
 	n := len(mutant.Adn)
