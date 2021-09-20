@@ -21,18 +21,20 @@ spec:
             cpu: 100m
             memory: 100Mi
         ports:
-          - containerPort: 80  # Should match the port number that the Go application listens on
+          - containerPort: 3000  # Should match the port number that the Go application listens on
 ---
 apiVersion: v1
 kind: Service                    # Type of kubernetes resource
 metadata:
   name: golang-api     # Unique name of the resource
 spec:
-  type: NodePort                 # Expose the Pods by opening a port on each Node and proxying it to the service.
   ports:                         # Take incoming HTTP requests on port 3000 and forward them to the targetPort of 80
   - name: http
     port: 80
-    targetPort: 80
+    targetPort: 3000
     protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: "35.222.16.153"
+
   selector:
     app: golang-api            # Map any pod with label `app=golang-api` to this service
