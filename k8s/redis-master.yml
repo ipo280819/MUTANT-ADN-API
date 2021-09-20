@@ -34,6 +34,13 @@ spec:
               name: redis
               key: REDIS_PASS
         args: ["--requirepass", "$(REDIS_PASS)"]
+        volumeMounts:
+        - mountPath: "/data"
+          name: redis-data  
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: pvc-redis
 ---
 apiVersion: v1
 kind: Service        # Type of Kubernetes resource
@@ -51,6 +58,35 @@ spec:
     app: redis
     role: master
     tier: backend
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
   
-  
-    
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: redis-service
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: redis-service
+  minReplicas: 1
+  maxReplicas: 12
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 60
