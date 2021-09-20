@@ -33,15 +33,18 @@ func (service *MutantStatsService) GetStats() dto.MutantStatsDTO {
 }
 
 func calcStats(statsDTO dto.MutantStatsDTO, isMutant bool) dto.MutantStatsDTO {
+
 	if isMutant {
 		statsDTO.CountMutant += 1
 	} else {
 		statsDTO.CountHuman += 1
 	}
+
 	if statsDTO.CountHuman == 0 {
 		statsDTO.Ratio = 1
 	} else {
 		statsDTO.Ratio = float32(statsDTO.CountMutant) / float32(statsDTO.CountHuman)
 	}
+
 	return statsDTO
 }
