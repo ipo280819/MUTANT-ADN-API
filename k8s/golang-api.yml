@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment                 # Type of Kubernetes resource
+metadata:
+  name: golang-api             # Unique name of the Kubernetes resource
+spec:
+  replicas: 1                    # Number of pods to run at any given time
+  selector:
+    matchLabels:
+      app: golang-api          # This deployment applies to any Pods matching the specified label
+  template:                      # This deployment will create a set of pods using the configurations in this template
+    metadata:
+      labels:                    # The labels that will be applied to all of the pods in this deployment
+        app: golang-api 
+    spec:
+      containers:
+      - name: golang-api
+        image: gcr.io/ipo-mutant-api/golang-api:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+          - containerPort: 80  # Should match the port number that the Go application listens on
+        env:               # Environment variables passed to the container
+        - name: REDIS_PASS
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PASS
+          
+---
+apiVersion: v1
+kind: Service                    # Type of kubernetes resource
+metadata:
+  name: golang-api     # Unique name of the resource
+spec:
+  ports:                         # Take incoming HTTP requests on port 3000 and forward them to the targetPort of 80
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: "35.222.16.153"
+
+  selector:
+    app: golang-api            # Map any pod with label `app=golang-api` to this service
