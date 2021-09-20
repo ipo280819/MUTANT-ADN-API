@@ -21,7 +21,7 @@ spec:
             cpu: 100m
             memory: 100Mi
         ports:
-          - containerPort: 3000  # Should match the port number that the Go application listens on
+          - containerPort: 80  # Should match the port number that the Go application listens on
 ---
 apiVersion: v1
 kind: Service                    # Type of kubernetes resource
@@ -31,7 +31,7 @@ spec:
   ports:                         # Take incoming HTTP requests on port 3000 and forward them to the targetPort of 80
   - name: http
     port: 80
-    targetPort: 3000
+    targetPort: 80
     protocol: TCP
   type: LoadBalancer
   loadBalancerIP: "35.222.16.153"
